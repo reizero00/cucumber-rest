@@ -22,14 +22,18 @@ public class PlaceApis {
      * @return the response as a string
      */
     public Response addPlace(AddPlace addPlaceRequestBody) {
+        RequestSpecifications requestSpecification = new RequestSpecifications();
+
+        ResponseSpecifications responseSpecification = new ResponseSpecifications();
+
         return given()
-                .spec(getRequestSpecification())
+                .spec(requestSpecification.getRequestSpecification())
                 .body(addPlaceRequestBody)
-                .log().all()
                 .when()
                 .post("/maps/api/place/add/json")
             .then()
-                .spec(getResponseSpecification())
+                .spec(responseSpecification.getResponseSpecification())
+                .log().all()
                 .extract().response();
     }
 
@@ -48,29 +52,6 @@ public class PlaceApis {
         addPlaceRequestBody.setWebsite(website);
         addPlaceRequestBody.setTypes(new ArrayList<String>(Arrays.asList(types)));
         return addPlaceRequestBody;
-    }
-
-    /**
-     * Returns a RequestSpecification object that contains the base URI and query parameters.
-     * @return the RequestSpecification object
-     */
-    public static RequestSpecification getRequestSpecification() {
-        return new RequestSpecBuilder()
-                .setBaseUri("https://rahulshettyacademy.com")
-                .addQueryParam("key", "qaclick123")
-                .setContentType("application/json")
-                .build();
-    }
-
-    /**
-     * Returns a ResponseSpecification object that contains the expected status code and content type.
-     * @return the ResponseSpecification object
-     */
-    public static ResponseSpecification getResponseSpecification() {
-        return new ResponseSpecBuilder()
-                .expectStatusCode(200)
-                .expectContentType("application/json")
-                .build();
     }
 
 }
