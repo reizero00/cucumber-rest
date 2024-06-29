@@ -1,4 +1,4 @@
-package pojo;
+package com.konias.cucumber.models.pojo;
 
 import java.util.List;
 

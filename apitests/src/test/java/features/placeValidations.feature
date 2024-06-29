@@ -7,3 +7,4 @@ Scenario: Ability to add a Place using AddPlaceAPI
     Then the response should return status 200 successful
         And "status" in the response should be "OK"
         And "scope" in the response should be "APP"
+    

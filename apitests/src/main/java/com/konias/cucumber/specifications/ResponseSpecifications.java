@@ -1,4 +1,4 @@
-package com.konias.cucumber;
+package com.konias.cucumber.specifications;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.ResponseSpecification;

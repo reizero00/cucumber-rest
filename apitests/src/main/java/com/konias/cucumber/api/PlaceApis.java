@@ -1,18 +1,18 @@
-package com.konias.cucumber;
+package com.konias.cucumber.api;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
+import com.konias.cucumber.models.pojo.AddPlace;
+import com.konias.cucumber.models.pojo.Location;
+import com.konias.cucumber.specifications.RequestSpecifications;
+import com.konias.cucumber.specifications.ResponseSpecifications;
 
-import pojo.AddPlace;
-import pojo.Location;
+import io.restassured.response.Response;
+
 
 public class PlaceApis {
 
@@ -20,8 +20,9 @@ public class PlaceApis {
      * Adds a new place to the Google Map API.
      * @param addPlaceRequestBody the body of the request
      * @return the response as a string
+     * @throws IOException 
      */
-    public Response addPlace(AddPlace addPlaceRequestBody) {
+    public Response addPlace(AddPlace addPlaceRequestBody) throws IOException {
         RequestSpecifications requestSpecification = new RequestSpecifications();
 
         ResponseSpecifications responseSpecification = new ResponseSpecifications();
@@ -33,7 +34,6 @@ public class PlaceApis {
                 .post("/maps/api/place/add/json")
             .then()
                 .spec(responseSpecification.getResponseSpecification())
-                .log().all()
                 .extract().response();
     }
 

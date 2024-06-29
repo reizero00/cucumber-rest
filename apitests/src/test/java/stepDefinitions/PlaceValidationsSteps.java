@@ -2,6 +2,8 @@ package stepDefinitions;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -9,9 +11,9 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import pojo.AddPlace;
 
-import com.konias.cucumber.PlaceApis;
+import com.konias.cucumber.api.PlaceApis;
+import com.konias.cucumber.models.pojo.AddPlace;
 
 public class PlaceValidationsSteps {
 
@@ -23,16 +25,14 @@ public class PlaceValidationsSteps {
 
     @Given("^Add Place Payload$")
     public void addPlacePayload() {
-        RestAssured.baseURI = "https://rahulshettyacademy.com";
-
         PlaceApis placeApis = new PlaceApis();
-
+        
         addPlaceRequestBody =  placeApis.createAddPlaceRequest("29, side layout, cohen 09", "-38.383494", "33.427362", "Frontline house", "(+91) 983 893 3937", "http://google.com", "French-IN", "69", new String[]{"shoe park", "shop"});
         
     }
     
     @When("^User calls \"([^\"]+)\" with POST HTTP request$")
-    public void userCallsAPIWithPOSTRequest(String apiName) {
+    public void userCallsAPIWithPOSTRequest(String apiName) throws IOException {
         // Add your code to call the API here
         System.out.println(addPlaceRequestBody);
         PlaceApis placeApis = new PlaceApis();

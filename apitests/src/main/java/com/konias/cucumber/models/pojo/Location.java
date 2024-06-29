@@ -1,4 +1,4 @@
-package pojo;
+package com.konias.cucumber.models.pojo;
 
 public class Location {
     private double lat;
@@ -22,3 +22,4 @@ public class Location {
         this.lng = lng;
     }
 }
+
