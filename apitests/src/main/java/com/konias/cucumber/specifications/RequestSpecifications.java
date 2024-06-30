@@ -19,7 +19,7 @@ public class RequestSpecifications {
          * @throws IOException 
      */
     public RequestSpecification getRequestSpecification() throws IOException {
-        PrintStream log = new PrintStream(new FileOutputStream("logging.txt"));
+        PrintStream log = new PrintStream(new FileOutputStream("logging.txt", true));
 
         String requestBaseUri = getProperties("baseUri");
 

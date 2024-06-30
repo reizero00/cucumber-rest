@@ -11,31 +11,55 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.konias.cucumber.api.ApiResources;
+import com.konias.cucumber.api.HttpMethodRequests;
 import com.konias.cucumber.api.PlaceApis;
-import com.konias.cucumber.models.pojo.AddPlace;
 
 public class PlaceValidationsSteps {
 
-    PlaceApis placeApis;
-    AddPlace addPlaceRequestBody;
+    JsonPath placeApis;
+    Object addPlaceRequestBody;
     RequestSpecification getRequestSpecification;
     Response addPlaceResponse;
     
     @Given("^Add Place Payload$")
-    public void addPlacePayload() {
+    public void addPlacePayload() throws JsonProcessingException {
         PlaceApis placeApis = new PlaceApis();
         
         addPlaceRequestBody =  placeApis.createAddPlaceRequest("29, side layout, cohen 09", "-38.383494", "33.427362", "Frontline house", "(+91) 983 893 3937", "http://google.com", "French-IN", "69", new String[]{"shoe park", "shop"});
         
     }
-    
-    @When("^User calls \"([^\"]+)\" with POST HTTP request$")
-    public void userCallsAPIWithPOSTRequest(String apiName) throws IOException {
-        // Add your code to call the API here
-        System.out.println(addPlaceRequestBody);
-        PlaceApis placeApis = new PlaceApis();
 
-        addPlaceResponse = placeApis.addPlace(addPlaceRequestBody);
+    @Given("Add Place Payload with {string}, {string} and {string}")
+    public void addPlacePayloadWithExample(String name, String language, String address) throws JsonProcessingException {
+        PlaceApis placeApis = new PlaceApis();
+        
+        addPlaceRequestBody =  placeApis.createAddPlaceRequest(
+            address, 
+            "-38.383494", 
+            "33.427362", 
+            name, 
+            "(+91) 983 893 3937", 
+            "http://google.com", 
+            language, 
+            "69", 
+            new String[]{"shoe park", "shop"}
+            );
+        
+    }
+    
+    @When("User calls {string} with {string} HTTP request")
+    public void userCallsAPIWithPOSTRequest(String apiName, String httpMethod) throws IOException {
+        ApiResources apiResources = ApiResources.valueOf(apiName);
+        String apiEndpoint = apiResources.getResource();
+        
+        HttpMethodRequests httpMethodRequests = new HttpMethodRequests();
+        if(httpMethod.equalsIgnoreCase("POST")) {
+            addPlaceResponse = httpMethodRequests.post(addPlaceRequestBody, apiEndpoint);            
+        } else if (httpMethod.equalsIgnoreCase("GET")) {
+            addPlaceResponse = httpMethodRequests.get(addPlaceRequestBody, apiEndpoint);
+        }
     }
 
     @Then("the response should return status {int} successful")
