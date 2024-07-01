@@ -2,9 +2,9 @@ package com.konias.cucumber.specifications;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
 import java.io.PrintStream;
-import java.util.Properties;
+
+import com.konias.cucumber.resources.Helpers;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -21,29 +21,20 @@ public class RequestSpecifications {
     public RequestSpecification getRequestSpecification() throws IOException {
         PrintStream log = new PrintStream(new FileOutputStream("logging.txt", true));
 
-        String requestBaseUri = getProperties("baseUri");
+        Helpers helpers = new Helpers();
+        
+        String requestBaseUri = helpers.getProperties("baseUri");
+        String placeKey = helpers.getProperties("placeKey");
 
         RequestSpecification requestSpecification = new RequestSpecBuilder()
                 .setBaseUri(requestBaseUri)
-                .addQueryParam("key", "qaclick123")
+                .addQueryParam("key", placeKey)
                 .addFilter(RequestLoggingFilter.logRequestTo(log))
                 .addFilter(ResponseLoggingFilter.logResponseTo(log))
                 .setContentType("application/json")
                 .build();
 
         return requestSpecification;
-    }
-
-    public static String getProperties(String propertyKey) throws IOException{
-        Properties testProperties = new Properties();
-       
-        String baseDirectory = System.getProperty("user.dir");
-
-        FileInputStream propertiesFile = new FileInputStream(baseDirectory + "/src/test/java/resources/test.properties");
-        testProperties.load(propertiesFile);
-
-        return testProperties.getProperty(propertyKey);
-        
     }
 
 }

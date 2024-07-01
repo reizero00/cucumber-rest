@@ -1,1 +1,4 @@
 apitests/logging.txt
+apitests/target/jsonReports/
+apitests/target/surefire-reports/
+apitests/target/cucumber-html-reports/

@@ -3,6 +3,7 @@ package com.konias.cucumber.api;
 import static io.restassured.RestAssured.given;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.konias.cucumber.specifications.RequestSpecifications;
 import com.konias.cucumber.specifications.ResponseSpecifications;
@@ -35,6 +36,21 @@ public class HttpMethodRequests {
                 .body(requestBody)
                 .when()
                 .get(apiEndpoint)
+            .then()
+                .spec(responseSpecification.getResponseSpecification())
+                .extract().response();
+        }
+
+    public Response delete(Map<String, Object> requestBody, String apiEndpoint) throws IOException {
+        RequestSpecifications requestSpecification = new RequestSpecifications();
+    
+        ResponseSpecifications responseSpecification = new ResponseSpecifications();
+    
+        return given()
+                .spec(requestSpecification.getRequestSpecification())
+                .body(requestBody)
+                .when()
+                .delete(apiEndpoint)
             .then()
                 .spec(responseSpecification.getResponseSpecification())
                 .extract().response();

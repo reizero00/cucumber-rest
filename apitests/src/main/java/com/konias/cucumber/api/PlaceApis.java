@@ -1,10 +1,19 @@
 package com.konias.cucumber.api;
 
+import static io.restassured.RestAssured.given;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.konias.cucumber.models.pojo.AddPlace;
 import com.konias.cucumber.models.pojo.Location;
+import com.konias.cucumber.specifications.RequestSpecifications;
+import com.konias.cucumber.specifications.ResponseSpecifications;
+
+import io.restassured.response.Response;
 
 
 public class PlaceApis {
@@ -34,6 +43,37 @@ public class PlaceApis {
         addPlaceRequestBody.setTypes(new ArrayList<String>(Arrays.asList(types)));
 
         return addPlaceRequestBody;
+    }
+
+    public String getValueFromPlaceResponseByKey(Response responseBody, String keyPath) {
+        return responseBody.jsonPath().getString(keyPath);
+    }
+
+    public Response getPlace(String requestEndpoint, String placeId) throws IOException{
+        ApiResources apiResources = ApiResources.valueOf(requestEndpoint);
+
+        String getPlaceEndpoint = apiResources.getResource();
+
+        RequestSpecifications requestSpecification = new RequestSpecifications();
+        ResponseSpecifications responseSpecification = new ResponseSpecifications();
+
+
+        return given()
+                .spec(requestSpecification.getRequestSpecification())
+                .queryParams("place_id", placeId)
+            .when()
+                .get(getPlaceEndpoint)
+                .then()
+                .spec(responseSpecification.getResponseSpecification())
+                .extract().response();
+    }
+
+    public Map<String,Object> createDeletePlaceRequest(String placeId){
+        Map<String, Object> requestPayload = new HashMap<>();
+        requestPayload.put("place_id", placeId);
+
+        return requestPayload;
+
     }
 
 }

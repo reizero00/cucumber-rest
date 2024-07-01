@@ -1,0 +1,8 @@
+com\konias\cucumber\models\pojo\AddPlace.class
+com\konias\cucumber\models\pojo\Location.class
+com\konias\cucumber\specifications\ResponseSpecifications.class
+com\konias\cucumber\api\PlaceApis.class
+com\konias\cucumber\api\HttpMethodRequests.class
+com\konias\cucumber\resources\Helpers.class
+com\konias\cucumber\specifications\RequestSpecifications.class
+com\konias\cucumber\api\ApiResources.class
